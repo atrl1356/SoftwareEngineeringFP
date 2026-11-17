@@ -1,0 +1,50 @@
+schema: spec-driven
+
+context: |
+  Language: zh-TW
+  All artifacts must be written in zh-TW.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+  遵循根目錄 AGENTS.md 的需求分析、規格、人工審查、實作、測試、驗證與封存流程。
+  未經使用者明確確認當前提案，不得實作功能性程式碼；規格齊全不代表已核准。
+
+rules:
+  proposal:
+    - 使用繁體中文，包含目標、非目標、範圍、風險與驗收條件。
+    - 完成提案後先交由使用者審查，不得自動進入實作。
+  specs:
+    - 以可驗證情境描述需求，保留必要英文標題及 SHALL/MUST 關鍵字。
+  design:
+    - 記錄技術選擇、替代方案、限制與風險。
+  tasks:
+    - 納入人工核准確認、實作、測試、驗證、規格同步與封存任務。
+
+operations:
+  apply:
+    guidance:
+      - 實作前閱讀 AGENTS.md 與該變更的 review.md，核對使用者對當前提案的明確確認；未確認必須停止實作。
+      - 需求或範圍有實質變動時重新取得使用者確認；不得自行核准。
+  archive:
+    guidance:
+      - 封存前確認所有任務、測試及規格驗證結果，保留未完成或跳過檢查的說明。
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always state what is out of scope
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing
