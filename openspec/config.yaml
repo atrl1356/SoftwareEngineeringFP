@@ -5,7 +5,7 @@ context: |
   All artifacts must be written in zh-TW.
   Keep OpenSpec structural headings and SHALL/MUST keywords in English.
   遵循根目錄 AGENTS.md 的需求分析、規格、人工審查、實作、測試、驗證與封存流程。
-  未經使用者明確確認當前提案，不得實作功能性程式碼；規格齊全不代表已核准。
+  在修改功能程式碼、測試或勾選實作任務前，依 AGENTS.md 查閱該變更的 review.md，核對原始確認、核准範圍與目前提案版本。缺少紀錄或無法核對時，停在人工審查。
 
 rules:
   proposal:
@@ -21,7 +21,7 @@ rules:
 operations:
   apply:
     guidance:
-      - 實作前閱讀 AGENTS.md 與該變更的 review.md，核對使用者對當前提案的明確確認；未確認必須停止實作。
+      - 直接呼叫 Apply tasks 或接續實作時也須核對核准。即使 CLI 顯示 ready，仍須完成 AGENTS.md 的人工審查查核才可實作。
       - 需求或範圍有實質變動時重新取得使用者確認；不得自行核准。
   archive:
     guidance:

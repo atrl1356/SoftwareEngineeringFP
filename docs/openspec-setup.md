@@ -59,7 +59,8 @@ openspec status --change <change-id>
 openspec validate <change-id> --strict --no-interactive
 ```
 
-向使用者展示 proposal、specs、design、tasks；取得對當前版本的明確確認，依 `AGENTS.md` 在該變更的 `review.md` 留下可追溯紀錄，再使用 `$openspec-apply-change`。
+向使用者展示 proposal、specs、design、tasks 及驗收條件。取得明確確認後，在 `openspec/changes/<change-id>/review.md` 記錄核准者、原始確認的對話摘要或 PR 審查連結、範圍及文件版本。若審查的是已提交文件，可以 commit SHA 記錄版本。
+直接使用 `$openspec-apply-change` 或接續實作前，皆須核對這份紀錄與目前提案。缺少紀錄或無法核對時，停在人工審查。
 需要調整提案時使用 `$openspec-update-change`；範圍實質變更須重新確認。
 實作後執行實際測試、`$openspec-verify-change` 與嚴格驗證，再使用 `$openspec-sync-specs`、`$openspec-archive-change`；多項已完成變更可用 `$openspec-bulk-archive-change`。
 CLI 與 Skills 不會技術性強制人工核准；代理必須遵循 `AGENTS.md`，審查者也應核對核准紀錄。
