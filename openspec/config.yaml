@@ -1,50 +1,13 @@
 schema: spec-driven
 
 context: |
-  Language: zh-TW
-  All artifacts must be written in zh-TW.
-  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
-  遵循根目錄 AGENTS.md 的需求分析、規格、人工審查、實作、測試、驗證與封存流程。
-  在修改功能程式碼、測試或勾選實作任務前，依 AGENTS.md 查閱該變更的 review.md，核對原始確認、核准範圍與目前提案版本。缺少紀錄或無法核對時，停在人工審查。
-
-rules:
-  proposal:
-    - 使用繁體中文，包含目標、非目標、範圍、風險與驗收條件。
-    - 完成提案後先交由使用者審查，不得自動進入實作。
-  specs:
-    - 以可驗證情境描述需求，保留必要英文標題及 SHALL/MUST 關鍵字。
-  design:
-    - 記錄技術選擇、替代方案、限制與風險。
-  tasks:
-    - 納入人工核准確認、實作、測試、驗證、規格同步與封存任務。
+  語言為繁體中文（zh-TW）。所有 OpenSpec 文件均使用繁體中文，保留 OpenSpec 的英文結構標題與 SHALL、MUST 等必要關鍵字。
+  功能開發遵循根目錄 AGENTS.md。進入實作前須取得使用者明確核准當前提案的紀錄。尚未核准或核准範圍已變更時，請停在提案審查階段。
 
 operations:
   apply:
     guidance:
-      - 直接呼叫 Apply tasks 或接續實作時也須核對核准。即使 CLI 顯示 ready，仍須完成 AGENTS.md 的人工審查查核才可實作。
-      - 需求或範圍有實質變動時重新取得使用者確認；不得自行核准。
+      - 先核對該變更提案所記錄的使用者核准及其範圍，再依核准的任務實作。
   archive:
     guidance:
-      - 封存前確認所有任務、測試及規格驗證結果，保留未完成或跳過檢查的說明。
-
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always state what is out of scope
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
-
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+      - 封存前核對驗收情境、測試結果、任務清單與嚴格驗證結果。
