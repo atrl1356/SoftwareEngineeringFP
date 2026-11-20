@@ -1,50 +1,24 @@
 schema: spec-driven
 
 context: |
-  Language: zh-TW
-  All artifacts must be written in zh-TW.
-  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
-  遵循根目錄 AGENTS.md 的需求分析、規格、人工審查、實作、測試、驗證與封存流程。
-  在修改功能程式碼、測試或勾選實作任務前，依 AGENTS.md 查閱該變更的 review.md，核對原始確認、核准範圍與目前提案版本。缺少紀錄或無法核對時，停在人工審查。
+  語言為繁體中文（zh-TW）。所有 OpenSpec 文件均使用繁體中文，保留 OpenSpec 的英文結構標題與 SHALL、MUST 等必要關鍵字。
+  
+  本專案是「課堂搶答室」：教師從 Google Sheets 的 Guided Notes 選定分頁匯入題目、開放與截止整場搶答，學生以活動碼進入並以組別作答。截止後先公布勝組；教師逐題確認後才公布勝答並寫回原學習單的「作答」與「搶答勝組」欄位。教師可移除活動，並在十天（240 小時）內依活動原階段還原。
 
-rules:
-  proposal:
-    - 使用繁體中文，包含目標、非目標、範圍、風險與驗收條件。
-    - 完成提案後先交由使用者審查，不得自動進入實作。
-  specs:
-    - 以可驗證情境描述需求，保留必要英文標題及 SHALL/MUST 關鍵字。
-  design:
-    - 記錄技術選擇、替代方案、限制與風險。
-  tasks:
-    - 納入人工核准確認、實作、測試、驗證、規格同步與封存任務。
+  技術堆疊：Node.js 24 以上、TypeScript（strict、ESM）、Vue 3 單檔元件、Vite、Fastify 5、Node 內建 SQLite、Google Sheets API 與 Google Drive API。前端位於 client/，後端與資料庫位於 server/，自動測試位於 tests/；單一 Fastify 程序同時提供 API 與建置後的靜態前端。套件版本以 package-lock.json 為準，除非需求明確需要，避免新增依賴。
+
+  架構與資料慣例：教師與學生經 /api 路由操作；活動、組別、提交、回寫與生命週期資料持久化於 SQLite。開場、送答與截止依完整 HTTP 請求到達順序裁決；同組同題只保留第一筆有效答案。回寫只可改動定位到的兩個目標格，必須保留非目標格、格式與合併範圍。活動移除、還原與到期清除不得對 Google Sheets 寫入。
+
+  程式慣例：沿用現有的 TypeScript strict 型別、Fastify 路由與 Store 短交易模式；對使用者可見的錯誤使用繁體中文。前端使用 Vue Composition API 與既有 api helper；不要將 Google OAuth 密鑰、SQLite 資料或 .env 提交到版本控制。任何會接觸真實 Google Sheets 的測試僅能使用專用可編輯副本，並須事前取得明確授權。
+
+  驗證慣例：功能調整至少執行 npm run typecheck、npm test 與 npm run test:e2e；涉及 Google OAuth 或回寫時，另在專用副本執行 npm run test:sheets。OpenSpec 變更完成後執行 openspec validate <change> --type change --strict 與 openspec validate --all --strict。
+
+  功能開發遵循根目錄 AGENTS.md。進入實作前須取得使用者明確核准當前提案的紀錄。尚未核准或核准範圍已變更時，請停在提案審查階段。
 
 operations:
   apply:
     guidance:
-      - 直接呼叫 Apply tasks 或接續實作時也須核對核准。即使 CLI 顯示 ready，仍須完成 AGENTS.md 的人工審查查核才可實作。
-      - 需求或範圍有實質變動時重新取得使用者確認；不得自行核准。
+      - 先核對該變更提案所記錄的使用者核准及其範圍，再依核准的任務實作。
   archive:
     guidance:
-      - 封存前確認所有任務、測試及規格驗證結果，保留未完成或跳過檢查的說明。
-
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always state what is out of scope
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
-
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+      - 封存前核對驗收情境、測試結果、任務清單與嚴格驗證結果。

@@ -1,0 +1,507 @@
+{
+  "id": "classroom-fixture-v1",
+  "title": "課堂學習單 · 計算機概論",
+  "editable": true,
+  "tabs": [
+    {
+      "id": 1,
+      "title": "單題練習",
+      "rows": [
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "題號"
+            },
+            "formattedValue": "題號"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "題目"
+            },
+            "formattedValue": "題目"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "作答"
+            },
+            "formattedValue": "作答"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "搶答勝組"
+            },
+            "formattedValue": "搶答勝組"
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "說明：依課堂學習單逐題作答"
+            },
+            "formattedValue": "說明：依課堂學習單逐題作答"
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "1"
+            },
+            "formattedValue": "1"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "處理器的英文縮寫"
+            },
+            "formattedValue": "處理器的英文縮寫"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "2"
+            },
+            "formattedValue": "2"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "資料的基本單位"
+            },
+            "formattedValue": "資料的基本單位"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "3"
+            },
+            "formattedValue": "3"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "記憶體的英文縮寫"
+            },
+            "formattedValue": "記憶體的英文縮寫"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "4"
+            },
+            "formattedValue": "4"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "輸入裝置舉例"
+            },
+            "formattedValue": "輸入裝置舉例"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "5"
+            },
+            "formattedValue": "5"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "輸出裝置舉例"
+            },
+            "formattedValue": "輸出裝置舉例"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "6"
+            },
+            "formattedValue": "6"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "作業系統舉例"
+            },
+            "formattedValue": "作業系統舉例"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredFormat": {
+              "textFormat": {
+                "italic": true
+              }
+            }
+          }
+        ]
+      ],
+      "merges": [
+        {
+          "startRowIndex": 1,
+          "endRowIndex": 2,
+          "startColumnIndex": 0,
+          "endColumnIndex": 4
+        }
+      ],
+      "protections": []
+    },
+    {
+      "id": 2,
+      "title": "另一分頁",
+      "rows": [
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "題號"
+            },
+            "formattedValue": "題號"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "題目"
+            },
+            "formattedValue": "題目"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "作答"
+            },
+            "formattedValue": "作答"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "搶答勝組"
+            },
+            "formattedValue": "搶答勝組"
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "說明：依課堂學習單逐題作答"
+            },
+            "formattedValue": "說明：依課堂學習單逐題作答"
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "1"
+            },
+            "formattedValue": "1"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "處理器的英文縮寫"
+            },
+            "formattedValue": "處理器的英文縮寫"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "2"
+            },
+            "formattedValue": "2"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "資料的基本單位"
+            },
+            "formattedValue": "資料的基本單位"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "3"
+            },
+            "formattedValue": "3"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "記憶體的英文縮寫"
+            },
+            "formattedValue": "記憶體的英文縮寫"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "4"
+            },
+            "formattedValue": "4"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "輸入裝置舉例"
+            },
+            "formattedValue": "輸入裝置舉例"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "5"
+            },
+            "formattedValue": "5"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "輸出裝置舉例"
+            },
+            "formattedValue": "輸出裝置舉例"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredValue": {
+              "stringValue": "6"
+            },
+            "formattedValue": "6"
+          },
+          {
+            "userEnteredValue": {
+              "stringValue": "作業系統舉例"
+            },
+            "formattedValue": "作業系統舉例"
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          },
+          {
+            "userEnteredFormat": {
+              "backgroundColor": {
+                "red": 0.9,
+                "green": 0.95,
+                "blue": 1
+              }
+            }
+          }
+        ],
+        [
+          {
+            "userEnteredFormat": {
+              "textFormat": {
+                "italic": true
+              }
+            }
+          }
+        ]
+      ],
+      "merges": [
+        {
+          "startRowIndex": 1,
+          "endRowIndex": 2,
+          "startColumnIndex": 0,
+          "endColumnIndex": 4
+        }
+      ],
+      "protections": []
+    }
+  ]
+}
