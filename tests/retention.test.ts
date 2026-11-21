@@ -71,15 +71,16 @@ it('第一輪資料庫副本升級兩次，學號、碼、提交、公布與待�
     try {
       expect(db.all('PRAGMA foreign_key_check')).toEqual([])
       expect(
-        db.one('SELECT code,version,removed_at,phase FROM activities'),
+        db.one('SELECT code,version,removed_at,phase,named_groups FROM activities'),
       ).toEqual({
         code: '654321',
         version: 0,
         removed_at: null,
         phase: '已結束',
+        named_groups: 0,
       })
-      expect(db.all('SELECT leader,label,joincode FROM groups_')).toEqual([
-        { leader: '101', label: 'G01', joincode: '987654' },
+      expect(db.all('SELECT leader,label,name,joincode FROM groups_')).toEqual([
+        { leader: '101', label: 'G01', name: 'G01', joincode: '987654' },
       ])
       expect(db.one('SELECT progress,winner,published FROM questions')).toEqual(
         { progress: '待核實', winner: 'g', published: 1 },
@@ -464,7 +465,7 @@ it('移除後停用所有學生與教師舊入口，已結束還原須重新以�
     q: '1',
     label: '1',
     ownAnswer: 'CPU',
-    winner: 'G01',
+      winner: '組001',
     winningAnswer: 'CPU',
   })
   expect(h.db.all('SELECT rank FROM submissions')).toEqual([{ rank: 1 }])
@@ -478,7 +479,7 @@ it.each(['準備中', '開放中'])(
       old = h.member(aid, '123456788')
     h.db.run('UPDATE groups_ SET leader=? WHERE id=?', '101', old.session.gid)
     if (phase === '開放中') h.quiz.control(h.owner, aid, 'open')
-    expect(h.quiz.join(old.session, '101', undefined).label).toBe('G01')
+    expect(h.quiz.join(old.session, '101', undefined).label).toBe('組788')
     const app = application({ db: h.db, sheets: h.sheets })
     cleanup.push(() => app.close())
     const token = h.db.session(null, aid)
@@ -503,8 +504,8 @@ it.each(['準備中', '開放中'])(
     ]) {
       expect((await post({ leader })).statusCode).toBeGreaterThanOrEqual(400)
     }
-    expect((await post({ leader: ' 123456789 ' })).json().label).toBe('G02')
-    expect((await post({ leader: '123456789' })).json().label).toBe('G02')
+    expect((await post({ leader: ' 123456789 ', name: '新組' })).json().label).toBe('新組')
+    expect((await post({ leader: '123456789', name: '新組' })).json().label).toBe('新組')
     expect(h.db.all('SELECT label,leader FROM groups_ ORDER BY label')).toEqual(
       [
         { label: 'G01', leader: '101' },
@@ -512,7 +513,7 @@ it.each(['準備中', '開放中'])(
       ],
     )
     expect((await post({ joinCode: old.group.joinCode })).json().label).toBe(
-      'G01',
+      '組788',
     )
   },
 )

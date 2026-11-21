@@ -4,6 +4,7 @@ import { validLeader } from '../shared/types'
 import { api, ApiError, type Snapshot } from './api'
 const code = ref(''),
   leader = ref(''),
+  name = ref(''),
   joinCode = ref(''),
   joining = ref(false)
 const aid = ref(
@@ -121,7 +122,9 @@ function group() {
     await api(
       root() + '/group',
       token.value,
-      joining.value ? { joinCode: joinCode.value } : { leader: leader.value },
+      joining.value
+        ? { joinCode: joinCode.value }
+        : { leader: leader.value, name: name.value },
     )
   })
 }
@@ -143,7 +146,7 @@ function leave() {
   clearTimeout(timer)
   online.value = false
   joining.value = false
-  code.value = leader.value = joinCode.value = ''
+  code.value = leader.value = name.value = joinCode.value = ''
   const storageKey = 'quiz-student:' + aid.value
   if (localStorage.getItem(storageKey) === token.value) {
     localStorage.removeItem(storageKey)
@@ -205,6 +208,12 @@ function leave() {
             v-model="leader"
             inputmode="numeric"
             placeholder="請輸入學號"
+            required
+        /></label><label v-if="!joining"
+          >組別名稱<input
+            v-model="name"
+            maxlength="20"
+            placeholder="例如：飛躍隊"
             required
         /></label>
         <button

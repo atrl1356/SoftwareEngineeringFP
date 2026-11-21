@@ -37,9 +37,10 @@ export class Store {
       PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL;
       CREATE TABLE IF NOT EXISTS teachers(name TEXT PRIMARY KEY, salt TEXT NOT NULL, hash TEXT NOT NULL, google TEXT);
       CREATE TABLE IF NOT EXISTS activities(id TEXT PRIMARY KEY, owner TEXT NOT NULL REFERENCES teachers(name), title TEXT NOT NULL,
-        code TEXT UNIQUE NOT NULL, phase TEXT NOT NULL DEFAULT '準備中', source TEXT, ready INTEGER NOT NULL DEFAULT 0, import_revision INTEGER NOT NULL DEFAULT 0);
+        code TEXT UNIQUE NOT NULL, phase TEXT NOT NULL DEFAULT '準備中', source TEXT, ready INTEGER NOT NULL DEFAULT 0, import_revision INTEGER NOT NULL DEFAULT 0,
+        named_groups INTEGER NOT NULL DEFAULT 1);
       CREATE TABLE IF NOT EXISTS groups_(id TEXT PRIMARY KEY, aid TEXT NOT NULL REFERENCES activities(id), leader TEXT NOT NULL,
-        label TEXT NOT NULL, joincode TEXT NOT NULL, UNIQUE(aid,id), UNIQUE(aid,leader), UNIQUE(aid,label), UNIQUE(aid,joincode));
+        label TEXT NOT NULL, name TEXT NOT NULL, joincode TEXT NOT NULL, UNIQUE(aid,id), UNIQUE(aid,leader), UNIQUE(aid,label), UNIQUE(aid,joincode));
       CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY, teacher TEXT REFERENCES teachers(name), aid TEXT REFERENCES activities(id),
         gid TEXT, isleader INTEGER NOT NULL DEFAULT 0, expires INTEGER NOT NULL, FOREIGN KEY(aid,gid) REFERENCES groups_(aid,id));
       CREATE TABLE IF NOT EXISTS questions(aid TEXT NOT NULL REFERENCES activities(id), q TEXT NOT NULL, label TEXT NOT NULL,
@@ -70,6 +71,18 @@ export class Store {
     ) {
       this.sql.exec('ALTER TABLE questions ADD COLUMN published_at INTEGER')
     }
+    // 已存在的資料庫在本功能推出前沒有名稱及場次旗標；保留原 G 代號的可見行為。
+    if (!this.all('PRAGMA table_info(activities)').some((c) => c.name === 'named_groups'))
+      this.sql.exec(
+        'ALTER TABLE activities ADD COLUMN named_groups INTEGER NOT NULL DEFAULT 0',
+      )
+    if (!this.all('PRAGMA table_info(groups_)').some((c) => c.name === 'name')) {
+      this.sql.exec("ALTER TABLE groups_ ADD COLUMN name TEXT NOT NULL DEFAULT ''")
+      this.sql.exec("UPDATE groups_ SET name=label WHERE name='' ")
+    }
+    this.sql.exec(
+      'CREATE UNIQUE INDEX IF NOT EXISTS groups_activity_name ON groups_(aid,name)',
+    )
 
     this.tx(() => {
       if (

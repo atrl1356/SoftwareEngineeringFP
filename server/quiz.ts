@@ -16,7 +16,7 @@ export class Quiz {
     const aid = id()
     const join = freshCode(this.db, aid)
     this.db.run(
-      'INSERT INTO activities(id,owner,title,code) VALUES(?,?,?,?)',
+      'INSERT INTO activities(id,owner,title,code,named_groups) VALUES(?,?,?,?,1)',
       aid,
       owner,
       title.trim(),
@@ -40,7 +40,12 @@ export class Quiz {
     check(a.removed_at === null, '活動已移除或無法使用', 410)
     return a
   }
-  join(session: Row, leader: string | undefined, joincode: string | undefined) {
+  join(
+    session: Row,
+    leader: string | undefined,
+    joincode: string | undefined,
+    groupName?: string,
+  ) {
     return this.db.tx(() => {
       const a = this.activity(session.aid)
       let g: Row | undefined
@@ -61,6 +66,15 @@ export class Quiz {
           check(a.phase !== '已結束', '活動已結束', 409)
           check(!session.gid, '請以原組身分參與', 409)
           check(validLeader(leader), '組長學號須為以 1 開頭的九位半形數字')
+          check(groupName !== undefined, '請輸入組別名稱')
+          const name = groupName.trim()
+          check(Array.from(name).length >= 1 && Array.from(name).length <= 20, '組別名稱須為 1 至 20 個字元')
+          check(!/\p{Cc}/u.test(name), '組別名稱不可含換行或控制字元')
+          check(
+            !this.db.one('SELECT 1 FROM groups_ WHERE aid=? AND name=?', a.id, name),
+            '此活動已有相同組別名稱',
+            409,
+          )
           const n = this.db.one(
             'SELECT COUNT(*) n FROM groups_ WHERE aid=?',
             a.id,
@@ -68,11 +82,12 @@ export class Quiz {
           const c = freshCode(this.db, a.id)
           const gid = id()
           this.db.run(
-            'INSERT INTO groups_ VALUES(?,?,?,?,?)',
+            'INSERT INTO groups_(id,aid,leader,label,name,joincode) VALUES(?,?,?,?,?,?)',
             gid,
             a.id,
             leader.trim(),
             'G' + String(n + 1).padStart(2, '0'),
+            name,
             c,
           )
           g = this.db.one('SELECT * FROM groups_ WHERE id=?', gid)!
@@ -92,7 +107,7 @@ export class Quiz {
         session.token,
       )
       return {
-        label: g.label,
+        label: a.named_groups ? g.name : g.label,
         ...(leader !== undefined ? { joinCode: g.joincode } : {}),
       }
     })
@@ -263,7 +278,7 @@ export class Quiz {
     const a = teacher ? this.owned(s.teacher, aid) : this.activity(aid)
     if (!teacher) {
       const me = this.db.one(
-        'SELECT label,joincode FROM groups_ WHERE aid=? AND id=?',
+        'SELECT label,name,joincode FROM groups_ WHERE aid=? AND id=?',
         aid,
         s.gid,
       )
@@ -275,8 +290,10 @@ export class Quiz {
               .all(
                 `
         SELECT q.q,q.label,own.answer AS ownAnswer,
-               g.label AS winner,CASE WHEN q.published=1 THEN best.answer END AS winningAnswer
+               CASE WHEN a.named_groups THEN g.name ELSE g.label END AS winner,
+               CASE WHEN q.published=1 THEN best.answer END AS winningAnswer
         FROM questions q
+        JOIN activities a ON a.id=q.aid
         LEFT JOIN submissions own ON own.aid=q.aid AND own.q=q.q AND own.gid=?
         LEFT JOIN groups_ g ON g.aid=q.aid AND g.id=q.winner
         LEFT JOIN submissions best ON best.aid=q.aid AND best.q=q.q AND best.gid=q.winner AND q.published=1
@@ -297,13 +314,13 @@ export class Quiz {
         id: a.id,
         title: a.title,
         phase: a.phase,
-        group: me?.label ?? null,
+        group: me ? (a.named_groups ? me.name : me.label) : null,
         questions,
         ...(s.isleader && me && !closed ? { joinCode: me.joincode } : {}),
       }
     }
     const groups = this.db.all(
-      'SELECT label,leader,joincode FROM groups_ WHERE aid=? ORDER BY rowid',
+      'SELECT label,name,leader,joincode FROM groups_ WHERE aid=? ORDER BY rowid',
       aid,
     )
     const items = this.db.all(
@@ -311,7 +328,7 @@ export class Quiz {
       aid,
     )
     const answers = this.db.all(
-      `SELECT s.q,s.gid,g.label,s.answer,s.rank FROM submissions s
+      `SELECT s.q,s.gid,g.label,g.name,s.answer,s.rank FROM submissions s
       JOIN groups_ g ON g.aid=s.aid AND g.id=s.gid WHERE s.aid=? ORDER BY s.q,s.rank`,
       aid,
     )
@@ -322,12 +339,15 @@ export class Quiz {
       return {
         q: q.q,
         label: q.label,
-        ...(a.phase === '已結束' ? { winner: best?.label ?? null } : {}),
+        ...(a.phase === '已結束'
+          ? { winner: best ? (a.named_groups ? best.name : best.label) : null }
+          : {}),
         ...(best ? { winningAnswer: best.answer } : {}),
         published: !!q.published,
         progress: q.progress,
         submissions: subs.map((r) => ({
-          label: r.label,
+          label: a.named_groups ? r.name : r.label,
+          ...(a.named_groups ? { code: r.label } : {}),
           answer: r.answer,
           rank: r.rank,
         })),
@@ -342,7 +362,8 @@ export class Quiz {
       version: a.version,
       ready: !!a.ready,
       groups: groups.map((g) => ({
-        label: g.label,
+        label: a.named_groups ? g.name : g.label,
+        ...(a.named_groups ? { code: g.label } : {}),
         leader: g.leader,
         ...(a.version > 0 && a.phase === '準備中'
           ? { joinCode: g.joincode }

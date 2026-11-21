@@ -157,7 +157,7 @@ test('等待頁停止輪詢及忽略遲到成功回覆，準備中還原後教�
     await expect(t.getByText(/新活動碼/)).toBeVisible()
     const renewed = env.quiz.activity(aid).code
     const pins = env.db.all(
-      'SELECT label,joincode FROM groups_ WHERE aid=? ORDER BY label',
+      'SELECT label,name,joincode FROM groups_ WHERE aid=? ORDER BY label',
       aid,
     )
     for (const group of pins)
@@ -171,9 +171,9 @@ test('等待頁停止輪詢及忽略遲到成功回覆，準備中還原後教�
     await expect(a.getByRole('alert')).toContainText('無效')
     await a.getByLabel('組內加入碼').fill(pins[0].joincode)
     await a.getByRole('button', { name: '加入組別', exact: true }).click()
-    await expect(a.getByText('G01', { exact: true })).toBeVisible()
+    await expect(a.getByText(pins[0].name, { exact: true })).toBeVisible()
     await join(b, env.origin, renewed, pins[1].joincode)
-    await expect(b.getByText('G02', { exact: true })).toBeVisible()
+    await expect(b.getByText(pins[1].name, { exact: true })).toBeVisible()
     await expect(b.getByText(pins[0].joincode, { exact: true })).toHaveCount(0)
     await t.getByRole('button', { name: '返回我的活動' }).click()
     await row(t, aid).locator('button.activity').click()
@@ -219,7 +219,7 @@ test('已結束還原沿用原碼，兩組重新加入只取回各自收據與�
     await t.getByRole('button', { name: '返回我的活動' }).click()
     await row(t, aid).locator('button.activity').click()
     await expect(t.locator('tbody tr').first().locator('td')).toHaveText([
-      'G02',
+      '組002 · G02',
       '1',
       'CPU',
     ])
@@ -260,6 +260,7 @@ test('零組開場提示、取消、確認與提示期間建立第一組', async
     await row(t, aid).locator('button.activity').click()
     const open = t.getByRole('button', { name: '開放搶答', exact: true })
     await open.click()
+    await student.getByLabel('組別名稱').fill('測試組')
     const prompt = t.getByRole('dialog')
     await expect(prompt).toContainText('目前尚無組別，仍要開放搶答嗎？')
     await prompt.getByRole('button', { name: '取消' }).click()
@@ -366,8 +367,9 @@ test('零組可直接確認開場，教師畫面仍為零而後端有組則單�
       ).toBe(1)
     }
     await late.getByLabel('組長學號').fill(' 100000003 ')
+    await late.getByLabel('組別名稱').fill('晚到組')
     await late.getByRole('button', { name: '建立組別' }).click()
-    await expect(late.getByText('G02', { exact: true })).toBeVisible()
+    await expect(late.getByText('晚到組', { exact: true })).toBeVisible()
   } finally {
     await Promise.all([t.close(), student.close(), late.close()])
   }

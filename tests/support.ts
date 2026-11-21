@@ -21,10 +21,10 @@ export function setup(file = ':memory:') {
   const owner = 'teacher',
     password = randomBytes(16).toString('hex')
   db.teacher(owner, password)
-  function member(aid: string, leader: string) {
+  function member(aid: string, leader: string, name = '組' + leader.slice(-3)) {
     const token = db.session(null, aid),
       s = db.one('SELECT * FROM sessions ORDER BY rowid DESC LIMIT 1')!
-    const group = quiz.join(s, leader, undefined)
+    const group = quiz.join(s, leader, undefined, name)
     return {
       token,
       session: db.one('SELECT * FROM sessions WHERE token=?', s.token)!,

@@ -34,6 +34,7 @@ test('第 37 題：三個獨立工作階段、同步延遲與雙格回寫', asyn
       await p.getByLabel('活動加入碼').fill(code!)
       await p.getByRole('button', { name: '進入活動' }).click()
       await p.getByLabel('組長學號').fill(leader)
+      await p.getByLabel('組別名稱').fill('組' + leader.slice(-3))
       await p.getByRole('button', { name: '建立組別' }).click()
       await expect(p.getByText('等待教師開場')).toBeVisible()
     }
@@ -118,7 +119,7 @@ test('第 37 題：三個獨立工作階段、同步延遲與雙格回寫', asyn
       label: '1',
       ownAnswer: '中央處理器',
     })
-    await expect(t.locator('tbody tr').first()).toContainText('G02')
+    await expect(t.locator('tbody tr').first()).toContainText('組002')
     await expect(t.locator('tbody tr').first()).toContainText('CPU')
     expect(db.all('SELECT rank,answer FROM submissions ORDER BY rank')).toEqual(
       [
@@ -128,12 +129,12 @@ test('第 37 題：三個獨立工作階段、同步延遲與雙格回寫', asyn
     )
     await timing('close', '結束整場', () =>
       Promise.all([
-        aq.getByText('G02', { exact: true }).waitFor(),
-        bq.getByText('G02', { exact: true }).waitFor(),
+        aq.getByText('組002', { exact: true }).waitFor(),
+        bq.getByText('組002', { exact: true }).waitFor(),
       ]).then(() => {}),
     )
     const closed = await snapshot()
-    expect(closed.questions[0].winner).toBe('G02')
+    expect(closed.questions[0].winner).toBe('組002')
     expect(closed.questions[0]).not.toHaveProperty('winningAnswer')
     await t.getByRole('button', { name: '預覽兩格' }).click()
     await expect(t.getByText('作答 · C3')).toBeVisible()
@@ -144,7 +145,7 @@ test('第 37 題：三個獨立工作階段、同步延遲與雙格回寫', asyn
     const expected = sample()
     for (const [col, txt] of [
       [2, 'CPU'],
-      [3, 'G02'],
+      [3, '組002'],
     ] as const) {
       const cell = expected.tabs[0].rows[2][col]
       cell.userEnteredValue = { stringValue: txt }
@@ -189,7 +190,7 @@ for (const scenario of ['過期預覽', 'Google 拒寫'] as const) {
         await t.goto(env.origin + '/?role=teacher')
         await t.locator('.activity').first().click()
         await s.goto(env.origin)
-        await expect(s.getByText('G01', { exact: true }).first()).toBeVisible()
+        await expect(s.getByText('組001', { exact: true }).first()).toBeVisible()
         await t.getByRole('button', { name: '預覽兩格' }).click()
         await expect(t.getByText('作答 · C3')).toBeVisible()
         const expected = sample()
@@ -213,11 +214,11 @@ for (const scenario of ['過期預覽', 'Google 拒寫'] as const) {
           await expect(t.locator('.slot').last()).toContainText('人工修改')
           await expect(t.getByRole('checkbox')).not.toBeChecked()
           await s.reload()
-          await expect(q.getByText('G01', { exact: true })).toBeVisible()
+          await expect(q.getByText('組001', { exact: true })).toBeVisible()
           await expect(q.getByText('公布勝答：CPU')).toHaveCount(0)
         }
         await expect(
-          s.locator('[data-q="2"]').getByText('G02', { exact: true }),
+          s.locator('[data-q="2"]').getByText('組002', { exact: true }),
         ).toBeVisible()
         await expect(
           s.getByText('另一未公布勝答', { exact: false }),

@@ -214,6 +214,7 @@ export function application(opts: Options) {
       s,
       typeof body(r).leader === 'string' ? str(r, 'leader') : undefined,
       typeof body(r).joinCode === 'string' ? str(r, 'joinCode') : undefined,
+      typeof body(r).name === 'string' ? str(r, 'name') : undefined,
     )
   })
   app.get('/api/activities/:aid', async (r) =>

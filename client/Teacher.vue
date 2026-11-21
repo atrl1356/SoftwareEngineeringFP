@@ -366,7 +366,7 @@ function write(confirm: boolean) {
             </thead>
             <tbody>
               <tr v-for="r in question.submissions">
-                <td>{{ r.label }}</td>
+                <td>{{ r.label }}<small v-if="r.code"> · {{ r.code }}</small></td>
                 <td>{{ r.rank }}</td>
                 <td class="answer">{{ r.answer }}</td>
               </tr>
@@ -376,7 +376,7 @@ function write(confirm: boolean) {
                     !question?.submissions?.some((r) => r.label === g.label),
                 )"
               >
-                <td>{{ g.label }}</td>
+                <td>{{ g.label }}<small v-if="g.code"> · {{ g.code }}</small></td>
                 <td>—</td>
                 <td>未作答</td>
               </tr>
@@ -431,7 +431,7 @@ function write(confirm: boolean) {
       <details v-if="state.groups?.length" class="panel">
         <summary>查看組長名冊</summary>
         <p v-for="g in state.groups">
-          {{ g.label }} · {{ g.leader }}
+          {{ g.label }}<span v-if="g.code"> · {{ g.code }}</span> · {{ g.leader }}
           <span v-if="g.joinCode">· 新組內碼 {{ g.joinCode }}</span>
         </p>
       </details>

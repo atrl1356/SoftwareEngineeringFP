@@ -67,7 +67,9 @@ export class Writeback {
     const live = parseBook(b, src.tab, q).questions.find((x) => x.q === q)
     check(live && live.stem === item.stem, '原題已變更，暫停回寫', 409)
     const best = this.db.one(
-      'SELECT s.answer,g.label FROM submissions s JOIN groups_ g ON g.id=s.gid WHERE s.aid=? AND s.q=? AND s.gid=?',
+      `SELECT s.answer,CASE WHEN a.named_groups THEN g.name ELSE g.label END AS display
+       FROM submissions s JOIN groups_ g ON g.id=s.gid JOIN activities a ON a.id=s.aid
+       WHERE s.aid=? AND s.q=? AND s.gid=?`,
       aid,
       q,
       item.winner,
@@ -81,7 +83,7 @@ export class Writeback {
       const m = marks.find((m) => overlap(m.cell, t.range))
       return {
         ...t,
-        expected: i === 0 ? best.answer : best.label,
+        expected: i === 0 ? best.answer : best.display,
         version: m?.version ?? 0,
         writer: m?.job ?? null,
       }

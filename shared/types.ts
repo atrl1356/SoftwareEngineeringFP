@@ -23,7 +23,7 @@ export interface Question {
   winner?: string | null
   winningAnswer?: string
   ownAnswer?: string | null
-  submissions?: { label: string; answer: string; rank: number }[]
+  submissions?: { label: string; code?: string; answer: string; rank: number }[]
   progress?: string
   published?: boolean
 }
@@ -34,7 +34,7 @@ export interface Snapshot {
   phase: Phase
   questions: Question[]
   code?: string
-  groups?: { label: string; leader: string; joinCode?: string }[]
+  groups?: { label: string; code?: string; leader: string; joinCode?: string }[]
   group?: string
   joinCode?: string
   ready?: boolean
